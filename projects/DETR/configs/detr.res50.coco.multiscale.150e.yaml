@@ -1,0 +1,52 @@
+MODEL:
+  META_ARCHITECTURE: "DETR"
+  WEIGHTS: "detectron2://ImageNetPretrained/MSRA/R-50.pkl"
+  BACKBONE:
+    NAME: "build_resnet_backbone"
+  RESNETS:
+    DEPTH: 50
+    OUT_FEATURES: ["res5"]
+  DETR:
+    TRANSFORMER:
+      D_MODEL: 256
+      N_HEAD: 8
+      NUM_ENC_LAYERS: 6
+      NUM_DEC_LAYERS: 6
+      DIM_FFN: 2048
+      DROPOUT_RATE: 0.1
+      ACTIVATION: "relu"
+      PRE_NORM: False
+      RETURN_INTERMEDIATE_DEC: True
+    POSITION_EMBEDDING: "sine"  # choice: [sine, learned]
+    NUM_QUERIES: 100
+    NO_AUX_LOSS: False
+    COST_CLASS: 1.0
+    COST_BBOX: 5.0
+    COST_GIOU: 2.0
+    MASK_LOSS_COEFF: 1.0
+    DICE_LOSS_COEFF: 1.0
+    BBOX_LOSS_COEFF: 5.0
+    GIOU_LOSS_COEFF: 2.0
+    EOS_COEFF: 0.1  # Relative classification weight of the no-object class
+    NUM_CLASSES: 80  # For COCO
+DATASETS:
+  TRAIN: ("coco_2017_train",)
+  TEST: ("coco_2017_val",)
+SOLVER:
+  OPTIMIZER_NAME: "AdamW"
+  IMS_PER_BATCH: 16  # 8 GPUs
+  BASE_LR: 0.0001  # Note that RetinaNet uses a different default learning rate
+  BASE_LR_BACKBONE: 0.00001
+  STEPS: (733000,)  # 100 epoch using batch size 16 
+  WARMUP_ITERS: 0
+  MAX_ITER: 1099500  # 150 epoch using batch size 16
+  CLIP_GRADIENTS:
+    ENABLED: True
+    CLIP_TYPE: "norm"
+    CLIP_VALUE: 0.1
+    NORM_TYPE: 2.0
+INPUT:
+  MIN_SIZE_TRAIN: (480, 512, 544, 576, 608, 640, 672, 704, 736, 768, 800)
+TEST:
+  EVAL_PERIOD: 7330  # 1 epoch
+VERSION: 2
