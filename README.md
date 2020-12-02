@@ -1,5 +1,9 @@
 # DETR based on Detectron2
 
+**DETR.detectron2 has been deprecated. Please see our new implementation based on [cvpods](https://github.com/poodarchu/cvpods), which is more user-friendly.**
+**The implementation of DETR can be found [here](https://github.com/poodarchu/cvpods/tree/master/playground/detection/detr/detr.res50.c5.coco.multiscale.150e.bs16)**
+**All the models trained on detectron2 can be evaluated using cvpods.**
+
 ## Instructions
 1. Follow detectron2's readme to install detection2
   * ```cd DETR.detectron2```
